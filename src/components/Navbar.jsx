@@ -5,34 +5,23 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth); // Store the window width in state
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
+  // Use useEffect to update the windowWidth state when the window size changes
   useEffect(() => {
-    const handleScroll = () => {
-      const navbar = document.querySelector(".navbar"); // Add a CSS class to your nav element
-      if (navbar) {
-        if (window.innerWidth > 768) {
-          if (window.scrollY > 0) {
-            navbar.style.position = "sticky";
-            navbar.style.top = "0";
-            navbar.style.left = "0";
-            navbar.style.width = "100%";
-          } else {
-            navbar.style.position = "relative";
-          }
-        } else {
-          navbar.style.position = "relative";
-        }
-      }
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -43,7 +32,7 @@ function Navbar() {
           BrandName
         </Link>
 
-        {window.innerWidth <= 768 && (
+        {windowWidth <= 768 && ( // Use windowWidth state for conditional rendering
           <button className="md:hidden" onClick={toggleMenu}>
             {menuOpen ? (
               <FaTimes className="w-6 h-6 fill-current text-white" />
@@ -84,7 +73,7 @@ function Navbar() {
       </div>
 
       {/* Sidebar menu for smaller screens */}
-      {window.innerWidth <= 768 && menuOpen && (
+      {windowWidth <= 768 && menuOpen && ( // Use windowWidth state for conditional rendering
         <div className="bg-gray-800 text-white fixed top-0 right-0 h-full w-1/3 z-50 transition-transform transform translate-x-0 md:hidden bg-opacity-91 rounded-bl-xl">
           <div className="p-4 flex flex-col mt-2">
             <button className="self-end" onClick={toggleMenu}>
