@@ -85,7 +85,7 @@ function Navbar() {
             </Link>
             <Link to="/about" className="mb-4" onClick={toggleMenu}>
               About
-            </Link>
+            </Link> 
             <Link to="/contact" className="mb-4" onClick={toggleMenu}>
               Contact
             </Link>
